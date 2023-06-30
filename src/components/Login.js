@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios"
+import {useNavigate} from "react-router-dom";
 
 function Login(props) {
 
+    const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [token, setToken] = useState("");
@@ -54,9 +56,15 @@ function Login(props) {
                 axios(config)
                     .then((response) => {
                         console.log(JSON.stringify(response.data));
+                        alert("you have logged in")
                         if (response.data == "admin") {
-                            alert("you have logged in")
-                            window.location.replace("/admin_menu")
+                            navigate("/admin_menu")
+                        }
+                        else if (response.data == "lecturer") {
+                            navigate("/lecturer_menu")
+                        }
+                        else if (response.data == "student") {
+                            navigate("/student_menu")
                         }
                     })
                     .catch((error) => {

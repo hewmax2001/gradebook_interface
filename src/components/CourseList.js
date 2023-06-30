@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import axios from "axios"
+import axios from "axios";
 import {Link} from "react-router-dom";
 
-function Lecturers(props) {
+function CourseList(props) {
     const [token, setToken] = useState("")
-    const [lecturers, setLecturers] = useState([])
+    const [courses, setCourses] = useState([])
     const [loading, setLoading] = useState(true)
 
-    function getLecturers() {
+    function getCourses() {
         if (token) {
             let config = {
                 method: 'get',
                 maxBodyLength: Infinity,
-                url: 'http://127.0.0.1:8000/api/lecturers/',
+                url: 'http://127.0.0.1:8000/api/courses/',
                 headers: {
                     'Authorization': 'token ' + token
                 }
@@ -22,7 +22,7 @@ function Lecturers(props) {
                 .then((response) => {
                     console.log(JSON.stringify(response.data));
                     setLoading(false)
-                    setLecturers(response.data)
+                    setCourses(response.data)
                 })
                 .catch((error) => {
                     console.log(error);
@@ -30,20 +30,16 @@ function Lecturers(props) {
         }
     }
 
-    useEffect(() => {
+     useEffect(() => {
         setToken(localStorage.getItem("token"));
-        getLecturers()
+        getCourses()
     }, [token]);
 
-    function createLecturer() {
-        window.location.href="/lecturer_create"
-    }
-
-    function deleteLecturer(id) {
+    function deleteCourse(id) {
         let config = {
                 method: 'delete',
                 maxBodyLength: Infinity,
-                url: 'http://127.0.0.1:8000/api/detail_lecturer/' + id,
+                url: 'http://127.0.0.1:8000/api/courses/' + id + "/",
                 headers: {
                     'Authorization': 'token ' + token
                 }
@@ -53,14 +49,13 @@ function Lecturers(props) {
                 .then((response) => {
                     console.log(JSON.stringify(response.data));
                     setLoading(false)
-                    getLecturers()
-                    alert("Lecturer successfully delete")
+                    getCourses()
+                    alert("Course successfully delete")
                 })
                 .catch((error) => {
                     console.log(error);
                 });
     }
-
 
     return (
         <div>
@@ -69,13 +64,13 @@ function Lecturers(props) {
                     :
                     <div>
                         <Link to={"/admin_menu"}> <button>Return</button> </Link>
-                        <button onClick={createLecturer}>Create Lecturer</button>
+                        <Link to={"/course_create"}><button>Create Course</button></Link>
                         <br/>
-                        {lecturers.map(lec =>
-                            <p key={lec.id}>
-                                <Link to={"/lecturer_detail"} state={{lecturerID: lec.id}}>{lec.firstname} {lec.lastname}</Link>
-                                <Link to={"/lecturer_update"} state={{lecturerID: lec.id}}><button>Update</button></Link>
-                                <button onClick={(key) => deleteLecturer(lec.id)}>Delete</button>
+                        {courses.map(cor =>
+                            <p key={cor.id}>
+                                <Link to={"/course_detail"} state={{courseID: cor.id}}>{cor.code} {cor.name}</Link>
+                                <Link to={"/course_update"} state={{courseID: cor.id}}><button>Update</button></Link>
+                                <button onClick={(key) => deleteCourse(cor.id)}>Delete</button>
                             </p>
                         )}
                     </div>
@@ -84,4 +79,4 @@ function Lecturers(props) {
     );
 }
 
-export default Lecturers;
+export default CourseList;

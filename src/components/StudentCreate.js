@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
+import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import FormData from "form-data";
-import {Link, Route, useNavigate} from "react-router-dom";
-import AdminMenu from "./AdminMenu";
-import LecturerDetail from "./LecturerDetail";
 
-function CreateLecturer(props) {
+function StudentCreate(props) {
     const navigate = useNavigate();
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
@@ -30,7 +28,7 @@ function CreateLecturer(props) {
         setDob(event.target.value);
     }
 
-    function createLecturer() {
+    function createStudent() {
         if (!validation()) {
             alert("All fields must be filled!")
             return
@@ -46,7 +44,7 @@ function CreateLecturer(props) {
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'http://127.0.0.1:8000/api/add_lecturer/',
+            url: 'http://127.0.0.1:8000/api/student_add/',
             headers: {
                 'Authorization': 'token ' + localStorage.getItem("token")
             },
@@ -57,8 +55,8 @@ function CreateLecturer(props) {
         axios(config)
             .then((response) => {
                 console.log(JSON.stringify(response.data));
-                alert("Lecturer successfully created")
-                navigate("/lecturer_detail", {state:{lecturerID: response.data.id}})
+                alert("Student successfully created")
+                navigate("/student_detail", {state:{studentID: response.data.id}})
             })
             .catch((error) => {
                 console.log(error);
@@ -74,14 +72,14 @@ function CreateLecturer(props) {
 
     return (
         <div>
-            <Link to={"/lecturers_list"}><button>Return</button></Link>
+            <Link to={"/students_list"}><button>Return</button></Link>
             <p>Firstname: <input onChange={firstnameHandler} type={'text'} placeholder={'Firstname'}/></p>
             <p>Lastname: <input onChange={lastnameHandler} type={'text'} placeholder={'Lastname'}/></p>
             <p>Email: <input onChange={emailHandler} type={'text'} placeholder={'Email'}/></p>
             <p>DOB: <input onChange={dobHandler} type={'date'}/></p>
-            <button onClick={createLecturer}>Create Lecturer</button>
+            <button onClick={createStudent}>Create Student</button>
         </div>
     );
 }
 
-export default CreateLecturer;
+export default StudentCreate;

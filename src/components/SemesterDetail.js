@@ -2,23 +2,21 @@ import React, {useEffect, useState} from 'react';
 import {Link, useLocation} from "react-router-dom";
 import axios from "axios";
 
-function LecturerDetail(props) {
+function SemesterDetail(props) {
     const location = useLocation();
-    const lecturerID = location.state.lecturerID;
+    const semesterID = location.state.semesterID;
     const [token, setToken] = useState("")
     const [loading, setLoading] = useState(true)
-    const [lecturer, setLecturer] = useState({})
-
+    const [semester, setSemester] = useState({})
 
     useEffect(() => {
-
 
         setToken(localStorage.getItem("token"));
         if (localStorage.getItem("token")) {
             let config = {
                 method: 'get',
                 maxBodyLength: Infinity,
-                url: 'http://127.0.0.1:8000/api/lecturers/' + lecturerID + "/",
+                url: 'http://127.0.0.1:8000/api/semesters/' + semesterID + "/",
                 headers: {
                     'Authorization': 'token ' + localStorage.getItem("token")
                 }
@@ -28,26 +26,22 @@ function LecturerDetail(props) {
                 .then((response) => {
                     console.log(JSON.stringify(response.data));
                     setLoading(false)
-                    setLecturer(response.data)
+                    setSemester(response.data)
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         }
-    }, [lecturerID]);
-
+    }, [semesterID]);
 
     return (
         <div>
-            <Link to={"/lecturers_list"}><button>Return</button></Link>
-            <p>Lecturer ID: {lecturer.id}</p>
-            <p>Name: {lecturer.firstname} {lecturer.lastname}</p>
-            <p>Email: {lecturer.email}</p>
-            <p>DOB: {lecturer.dob}</p>
-            <p>User ID: {lecturer.user}</p>
+            <Link to={"/semesters_list"}><button>Return</button></Link>
+            <p>Semester ID: {semester.id}</p>
+            <p>Year: {semester.year}</p>
+            <p>Semester: {semester.semester}</p>
         </div>
     );
-
 }
 
-export default LecturerDetail;
+export default SemesterDetail;

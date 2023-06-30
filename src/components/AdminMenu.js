@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios"
+import {Link, Navigate} from "react-router-dom";
 
 function AdminMenu(props) {
     const [token, setToken] = useState("")
@@ -33,13 +34,7 @@ function AdminMenu(props) {
         }
     }, [token]);
 
-    function lecturers() {
-        window.location.href='/lecturers_list'
-    }
 
-    function students() {
-
-    }
 
 
     return (
@@ -48,11 +43,11 @@ function AdminMenu(props) {
                 loading?<p>Loading</p>
                     :
                     <div>
-                        <button onClick={lecturers}>Lecturers</button>
-                        <button>Students</button>
-                        <button>Courses</button>
-                        <button>Semesters</button>
-                        <button>Classes</button>
+                        <Link to={"/lecturers_list"}><button>Lecturers</button></Link>
+                        <Link to={"/students_list"}><button>Students</button></Link>
+                        <Link to={"/courses_list"}><button>Courses</button></Link>
+                        <Link to={"/semesters_list"}><button>Semesters</button></Link>
+                        <Link to={"/classes_list"}><button>Classes</button></Link>
                     </div>
             }
         </div>
